@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Event Invite</title>
+    <style>
+        :root {
+            /* Light mode colors */
+            --bg-primary: #f0f0f0;
+            --bg-secondary: #f8f9fa;
+            --bg-card: #ffffff;
+            --text-primary: #2c3e50;
+            --text-secondary: #34495e;
+            --accent-primary: #e74c3c;
+            --accent-secondary: #c0392b;
+            --border-color: #e0e0e0;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --avatar-border: #f8f9fa;
+            --card-gradient-start: #ffffff;
+            --card-gradient-end: #f8f9fa;
+            --page-gradient-start: #e0e0e0;
+            --page-gradient-end: #c3cfe2;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-primary: #1a1a1a;
+                --bg-secondary: #2d2d2d;
+                --bg-card: #242424;
+                --text-primary: #f5f5f5;
+                --text-secondary: #e0e0e0;
+                --accent-primary: #ff6b6b;
+                --accent-secondary: #ff5252;
+                --border-color: #404040;
+                --shadow-color: rgba(0, 0, 0, 0.3);
+                --avatar-border: #2d2d2d;
+                --card-gradient-start: #242424;
+                --card-gradient-end: #2d2d2d;
+                --page-gradient-start: #1a1a1a;
+                --page-gradient-end: #2d2d2d;
+            }
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, var(--page-gradient-start) 0%, var(--page-gradient-end) 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .invite {
+            background: linear-gradient(135deg, var(--card-gradient-start) 0%, var(--card-gradient-end) 100%);
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 0.5rem 1rem var(--shadow-color);
+            text-align: center;
+            max-width: 31.25rem;
+            width: 90%;
+        }
+
+        h1 {
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.125rem;
+        }
+
+        .event-details {
+            background-color: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 0.625rem;
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            color: var(--accent-primary);
+            margin-top: 0;
+            font-size: 1.8rem;
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin: 0.5rem 0;
+            line-height: 1.6;
+        }
+
+        .guest-list {
+            background-color: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 0.625rem;
+            margin-bottom: 2rem;
+            border: 0.0625rem solid var(--border-color);
+        }
+
+        .guest-list h3 {
+            color: var(--text-primary);
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .avatar-stack {
+            display: flex;
+            justify-content: center;
+            flex-wrap: nowrap;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .avatar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .avatar img {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 0.1875rem solid var(--avatar-border);
+            box-shadow: 0 0.125rem 0.25rem var(--shadow-color);
+            transition: transform 0.3s ease;
+        }
+
+        .avatar:hover img {
+            transform: translateY(-0.3125rem);
+        }
+
+        .avatar-name {
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .rsvp {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background-color: var(--bg-secondary);
+            border-radius: 0.625rem;
+        }
+
+        .rsvp h3 {
+            color: var(--text-primary);
+            margin-top: 0;
+        }
+
+        .rsvp-button {
+            background-color: var(--accent-primary);
+            color: var(--bg-card);
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 1.5625rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 0.125rem 0.25rem var(--shadow-color);
+        }
+
+        .rsvp-button:hover {
+            background-color: var(--accent-secondary);
+            transform: translateY(-0.125rem);
+            box-shadow: 0 0.25rem 0.5rem var(--shadow-color);
+        }
+
+        .avatar.more-guests {
+            cursor: pointer;
+        }
+
+        .more-indicator {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            background-color: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 1rem;
+            border: 0.1875rem solid var(--avatar-border);
+            box-shadow: 0 0.125rem 0.25rem var(--shadow-color);
+            transition: all 0.3s ease;
+        }
+
+        .avatar.more-guests:hover .more-indicator {
+            background-color: var(--accent-primary);
+            color: var(--bg-card);
+            transform: translateY(-0.3125rem);
+        }
+
+        @media (max-width: 37.5rem) {
+            .invite {
+                padding: 1.5rem;
+                width: 95%;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+
+            .event-details, .guest-list, .rsvp {
+                padding: 1rem;
+            }
+
+            .avatar img {
+                width: 2.5rem;
+                height: 2.5rem;
+            }
+
+            .more-indicator {
+                width: 2.5rem;
+                height: 2.5rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 25rem) {
+            .invite {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .avatar img {
+                width: 2.25rem;
+                height: 2.25rem;
+            }
+
+            .more-indicator {
+                width: 2.25rem;
+                height: 2.25rem;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="invite">
+        <h1>You're Invited!</h1>
+        <div class="event-details">
+            <h2>Birthday Party</h2>
+            <p>Date: Saturday, June 15th</p>
+            <p>Time: 2:00 PM - 5:00 PM</p>
+            <p>Location: 123 Party Street</p>
+        </div>
+        <div class="guest-list">
+            <h3>Guest List</h3>
+            <div class="avatar-stack">
+                <div class="avatar">
+                    <img src="https://i.pravatar.cc/150?img=1" alt="Guest 1">
+                    <span class="avatar-name">Guest 1</span>
+                </div>
+                <div class="avatar">
+                    <img src="https://i.pravatar.cc/150?img=2" alt="Guest 2">
+                    <span class="avatar-name">Guest 2</span>
+                </div>
+                <div class="avatar">
+                    <img src="https://i.pravatar.cc/150?img=3" alt="Guest 3">
+                    <span class="avatar-name">Guest 3</span>
+                </div>
+                <div class="avatar">
+                    <img src="https://i.pravatar.cc/150?img=4" alt="Guest 4">
+                    <span class="avatar-name">Guest 4</span>
+                </div>
+                <div class="avatar">
+                    <img src="https://i.pravatar.cc/150?img=5" alt="Guest 5">
+                    <span class="avatar-name">Guest 5</span>
+                </div>
+                <div class="avatar more-guests">
+                    <div class="more-indicator">+5</div>
+                    <span class="avatar-name">More</span>
+                </div>
+            </div>
+        </div>
+        <div class="rsvp">
+            <h3>Please RSVP by June 1st</h3>
+            <button class="rsvp-button">RSVP Now</button>
+        </div>
+    </div>
+</body>
+</html> 
